@@ -14,7 +14,6 @@ interface SortableItemProps {
   id: UniqueIdentifier
   useDragOverlay?: boolean
   onRemove?(id: UniqueIdentifier): void
-  renderItem?(args: any): React.ReactElement
 }
 
 export const SortableItem = ({

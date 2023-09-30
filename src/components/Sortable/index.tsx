@@ -21,13 +21,9 @@ import {
 } from '@dnd-kit/core'
 import {
   arrayMove,
-  useSortable,
   SortableContext,
   sortableKeyboardCoordinates,
-  SortingStrategy,
   rectSortingStrategy,
-  AnimateLayoutChanges,
-  NewIndexGetter,
 } from '@dnd-kit/sortable'
 
 import * as S from './styles'
