@@ -39,6 +39,8 @@ export const Sortable = () => {
 
   const isFirstAnnouncement = useRef(true)
 
+  // sensors are abstractions to detect different input methods, such as mouse and keyboard
+  // https://docs.dndkit.com/api-documentation/sensors
   const sensors = useSensors(
     useSensor(MouseSensor),
     useSensor(TouchSensor),
@@ -147,6 +149,12 @@ export const Sortable = () => {
           </S.Container>
         </SortableContext>
       </S.Wrapper>
+      {/* 
+        the drag overlay allows to display a copy of the active item in the cursor position, 
+        while keeping the item in it's original position with reduced opacity. 
+        This indicates to the user where the item will be dropped. 
+        https://docs.dndkit.com/api-documentation/draggable/drag-overlay
+      */}
       {createPortal(
         <DragOverlay adjustScale dropAnimation={dropAnimationConfig}>
           {activeId && <Item id={items[activeIndex]} dragOverlay />}
