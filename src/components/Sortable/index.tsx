@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import {
   Announcements,
@@ -34,6 +34,11 @@ import { Item } from '../Item'
 const INITIAL_ITEMS = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 export const Sortable = () => {
+  // if I don't check either the code is running in the client or in the server
+  // next will throw an error when trying to access the `document` object.
+  // This error doesn't break the application but I'm making this validation just so it won't appear on my console.
+  const [isInClient, setIsInClient] = useState(false)
+
   const [items, setItems] = useState<UniqueIdentifier[]>(INITIAL_ITEMS)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
 
@@ -71,6 +76,10 @@ export const Sortable = () => {
       }
     }
   }
+
+  useEffect(() => {
+    setIsInClient(true)
+  }, [])
 
   // those are the announcements for screen readers
   const announcements: Announcements = {
@@ -155,12 +164,13 @@ export const Sortable = () => {
         This indicates to the user where the item will be dropped. 
         https://docs.dndkit.com/api-documentation/draggable/drag-overlay
       */}
-      {createPortal(
-        <DragOverlay adjustScale dropAnimation={dropAnimationConfig}>
-          {activeId && <Item id={items[activeIndex]} dragOverlay />}
-        </DragOverlay>,
-        document.body,
-      )}
+      {isInClient &&
+        createPortal(
+          <DragOverlay adjustScale dropAnimation={dropAnimationConfig}>
+            {activeId && <Item id={items[activeIndex]} dragOverlay />}
+          </DragOverlay>,
+          document.body,
+        )}
     </DndContext>
   )
 }
