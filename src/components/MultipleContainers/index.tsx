@@ -282,7 +282,7 @@ export const MultipleContainers = () => {
     return (
       <Container
         label={`Column ${containerId}`}
-        style={{ height: '100%' }}
+        style={{ height: '100%', width: '100%' }}
         handleProps={{}}
       >
         {items[containerId].map((item) => (
