@@ -1,3 +1,5 @@
+'use client'
+
 import {
   CollisionDetection,
   DndContext,
@@ -18,7 +20,7 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { coordinateGetter } from '@/utils/multipleContainersKeyboardCoordinates'
 import {
@@ -46,6 +48,8 @@ const dropAnimation: DropAnimation = {
 }
 
 export const MultipleContainers = () => {
+  const [isInClient, setIsInClient] = useState(false)
+
   const [items, setItems] = useState<Items>({
     A: ['A1', 'A2', 'A3'],
     B: ['B1', 'B2', 'B3'],
@@ -73,6 +77,10 @@ export const MultipleContainers = () => {
       coordinateGetter,
     }),
   )
+
+  useEffect(() => {
+    setIsInClient(true)
+  }, [])
 
   /*
    Custom collision detection strategy optimized for multiple containers
@@ -314,16 +322,17 @@ export const MultipleContainers = () => {
           ))}
         </SortableContext>
       </Box>
-      {createPortal(
-        <DragOverlay adjustScale dropAnimation={dropAnimation}>
-          {activeId
-            ? containers.includes(activeId)
-              ? renderContainerDragOverlay(activeId)
-              : renderSortableItemOverlay(activeId)
-            : null}
-        </DragOverlay>,
-        document.body,
-      )}
+      {isInClient &&
+        createPortal(
+          <DragOverlay adjustScale dropAnimation={dropAnimation}>
+            {activeId
+              ? containers.includes(activeId)
+                ? renderContainerDragOverlay(activeId)
+                : renderSortableItemOverlay(activeId)
+              : null}
+          </DragOverlay>,
+          document.body,
+        )}
     </DndContext>
   )
 }
